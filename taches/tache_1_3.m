@@ -41,13 +41,13 @@ p_ada = repmat(p_ada, 1, len_bk);
 
 %figure, plot(p_ada);
 
-rl = yl .* p_ada;
-%figure, plot(rl);
+%rl = yl .* p_ada;
+figure, plot(rl);
 
 %% Echantionnage
 rm = zeros(1, len_bk);
 for i=1:1:len_bk
-    rm(1, i) = rl(1, Fse*(i-1)+1);
+    rm(1, i) = max(rl(1, Fse*(i-1)+middle+1), rl(1, Fse*(i-1)+middle-1));
 end
 
 %% Decision
