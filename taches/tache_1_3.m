@@ -37,25 +37,21 @@ yl = sl + nl;
 
 %% Filtre adapte
 p_ada = [0.5 * ones(1,middle), -0.5 * ones(1,Fse-middle)];
-p_ada = repmat(p_ada, 1, len_bk);
 
-%figure, plot(p_ada);
-
-%rl = yl .* p_ada;
-figure, plot(rl);
+rl = conv(yl, p_ada);
 
 %% Echantionnage
 rm = zeros(1, len_bk);
 for i=1:1:len_bk
-    rm(1, i) = max(rl(1, Fse*(i-1)+middle+1), rl(1, Fse*(i-1)+middle-1));
+    rm(1, i) = rl(1, Fse*i);
 end
 
 %% Decision
 b_estim = zeros(1, len_bk);
 for i=1:1:len_bk
     if(rm(1, i)>0)
-        b_estim(1, i) = 1;
-    else
         b_estim(1, i) = 0;
+    else
+        b_estim(1, i) = 1;
     end
 end
