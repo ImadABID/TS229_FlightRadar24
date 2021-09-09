@@ -32,16 +32,6 @@ ylabel("b_k")
 %% PPM Modulation
 sl = modulatePPM(bk, Fse);
 
-%{
-for i=1:1:len_bk
-    if(bk(1, i) == 0)
-        sl = [sl, 0.5 + p];
-    else
-        sl = [sl, 0.5 - p];
-    end
-end
-%}
-
 subplot(nbr_fig, 1, 2)
 plot((0:1:len_bk*Fse-1), sl)
 xlim([-Fse, Fse*len_bk])
