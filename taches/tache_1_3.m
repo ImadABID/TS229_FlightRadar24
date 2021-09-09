@@ -1,6 +1,7 @@
 %% Init
 clc;
 clear all;
+close all;
 
 %% Params
 
@@ -13,12 +14,21 @@ Nb=10e3;
 middle = floor(Fse/2);
 p = [-0.5 * ones(1,middle), 0.5 * ones(1,Fse-middle)];
 
+
+figure()
+nbr_fig = 6;
+
 %% input
 bk = [1, 0, 0, 1, 0];
+len_bk = size(bk); len_bk = len_bk(1,2);
+
+subplot(nbr_fig, 1, 1)
+plot((0:Fse:(len_bk-1)*Fse), bk, "*")
+xlim([-Fse, len_bk*Fse])
+ylabel("b_k")
 
 %% PPM Modulation
 sl = [];
-len_bk = size(bk); len_bk = len_bk(1,2);
 
 for i=1:1:len_bk
     if(bk(1, i) == 0)
@@ -28,24 +38,39 @@ for i=1:1:len_bk
     end
 end
 
-%figure, plot(sl);
+subplot(nbr_fig, 1, 2)
+plot((0:1:len_bk*Fse-1), sl)
+xlim([-Fse, Fse*len_bk])
+ylabel("s_l")
 
 %% Canal
 nl = zeros(1, Fse*len_bk);
 yl = sl + nl;
 
-%figure, plot(yl);
+subplot(nbr_fig, 1, 3)
+plot((0:1:len_bk*Fse-1),yl)
+xlim([-Fse, Fse*len_bk])
+ylabel("y_l")
 
 %% Filtre adapte
 p_ada = [0.5 * ones(1,middle), -0.5 * ones(1,Fse-middle)];
 
 rl = conv(yl, p_ada);
 
+subplot(nbr_fig, 1, 4)
+plot(rl)
+ylabel("r_l")
+
 %% Echantionnage
 rm = zeros(1, len_bk);
 for i=1:1:len_bk
     rm(1, i) = rl(1, Fse*i);
 end
+
+subplot(nbr_fig, 1, 5)
+plot((Fse:Fse:len_bk*Fse), rm, "*")
+xlim([0, Fse*(len_bk+1)])
+ylabel("r_m")
 
 %% Decision
 b_estim = zeros(1, len_bk);
@@ -56,7 +81,14 @@ for i=1:1:len_bk
         b_estim(1, i) = 1;
     end
 end
+
+subplot(nbr_fig, 1, 6)
+plot((Fse:Fse:len_bk*Fse), b_estim, "*")
+xlim([0, Fse*(len_bk+1)])
+ylabel("b_{estime}")
+
 %% Taux d'erreur binaire
+%{
 eb_n0_dB = 0:10;
 eb_n0 = 10.^(eb_n0_dB/10);
 TEB=zeros(size(eb_n0));
@@ -100,3 +132,4 @@ for i=1:length(eb_n0)
     end
     TEB(i) = error_cnt/bit_cnt;
  end 
+%}
