@@ -13,7 +13,7 @@ Fs = Fe/Fse;
 
 % p def
 middle = floor(Fse/2);
-p = [-0.5 * ones(1,middle), 0.5 * ones(1,Fse-middle)];
+P = [-0.5 * ones(1,middle), 0.5 * ones(1,Fse-middle)];
 
 
 figure()
