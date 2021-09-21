@@ -32,7 +32,8 @@ for i=1:1:SNR_len
     while nbr_err < nbr_err_threshold && j < nbr_err_max_iteration
         packet = randi([0 1], 1, packet_size);
         sl = modulatePPM(packet, Fse);
-        yl = sl + normrnd(0,sigma, [1, packet_size*Fse]);
+        nl = normrnd(0,sigma, [1, packet_size*Fse]);
+        yl = sl + nl;
         packet_estim = demodulatePPM(yl, Fse);
         nbr_err = nbr_err + sum(packet ~= packet_estim);
         nbr_bits = nbr_bits + packet_size;
