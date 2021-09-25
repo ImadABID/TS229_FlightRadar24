@@ -6,17 +6,33 @@ close all;
 addpath("../src/PHY");
 
 %{
+%% Test with White Noise
+
 %% par
 sig_len = 256*1000;
 sigma = 1;
 sig = normrnd(0,sigma, [1, sig_len]);
 
+Nfft = 256;
+Fe = 2e6;
+
 %% traitement
-[dsp_sig, f] = Mon_Welch_perso(sig, 256, 1000);
+dsp_sig_m = pwelch(sig);
 
 figure
-plot(f, dsp_sig)
+plot(dsp_sig_m)
+
+[dsp_sig_pro, f] = Mon_Welch(sig, Nfft, Fe);
+
+figure
+plot(f, dsp_sig_pro.*Fe)
+
+[dsp_sig_per, f] = Mon_Welch_perso(sig, Nfft, Fe);
+
+figure
+plot(f, dsp_sig_per .* Fe)
 %}
+
 
 %% Params
 
@@ -24,7 +40,7 @@ Fe = 20 * 1e6; %Hz
 Fse = 20;
 Fs = Fe/Fse;
 
-Ts = 20;
+Ts = Fse;
 
 Nfft = 256;
 
@@ -41,15 +57,20 @@ len_bk = size(bk); len_bk = len_bk(1,2);
 %% PPM Modulation
 sl = modulatePPM(bk, Fse);
 [dsp_sig, f] = Mon_Welch(sl, Nfft, Fe);
+dsp_sig = Fe .* dsp_sig;
 
 figure
-plot(f, dsp_sig .* Fe)
+plot(f, dsp_sig)
 
 %% theorique
-g = xcorr(P, Nfft) + 0.25;
-dsp_theo = 1/Ts * abs(fftshift(fft(P, Nfft))).^2;
 
-%dsp_theo = 0.5 * abs(fftshift(fft(P, Nfft))).^2;
+R_l_tilde = 1/Ts .* xcorr(P);
+TF_R_l_tilde_1 = zeros(1, Nfft);
+TF_R_l_tilde_1(1, 1) = 0.25*Nfft;
+TF_R_l_tilde_2 = fft(R_l_tilde, Nfft);
+TF_R_l_tilde = fftshift(TF_R_l_tilde_1 + TF_R_l_tilde_2);
+dsp_theo = abs(TF_R_l_tilde);
+
 
 hold on;
 plot(f, dsp_theo)
