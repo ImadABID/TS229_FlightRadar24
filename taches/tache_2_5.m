@@ -65,12 +65,14 @@ plot(f, dsp_sig)
 %% theorique
 
 R_l_tilde = 1/Ts .* xcorr(P);
-TF_R_l_tilde_1 = zeros(1, Nfft);
-TF_R_l_tilde_1(1, 1) = 0.25*Nfft;
-TF_R_l_tilde_2 = fft(R_l_tilde, Nfft);
-TF_R_l_tilde = fftshift(TF_R_l_tilde_1 + TF_R_l_tilde_2);
-dsp_theo = abs(TF_R_l_tilde);
 
+TF_R_l_tilde = fft(R_l_tilde, Nfft);
+TF_R_l_tilde(1, 1) = TF_R_l_tilde(1, 1) + 0.25*Nfft;
+dsp_theo = abs(fftshift(TF_R_l_tilde));
 
 hold on;
 plot(f, dsp_theo)
+
+xlabel('f');
+ylabel('DSP');
+legend('DSP expérimentale', 'DSP théorique');
