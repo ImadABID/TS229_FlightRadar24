@@ -8,17 +8,16 @@ function [X, f] = Mon_Welch_perso(x, Nfft, Fe)
         error("Mon_Welch_perso : Insuffisant data");
     end
     
-    DSP_realisations = [];
+    nbr_ech = floor(len_x/Nfft);
+    DSP_realisations = zeros(nbr_ech, Nfft);
     
-    for iech=1:Nfft:len_x
-        if(iech+Nfft <= len_x)
-            x_ech = x(1, iech:iech+Nfft);
-            DSP_realisations = [DSP_realisations; abs(fftshift(fft(x_ech, Nfft))).^2];
-        end
+    for iech=0:1:nbr_ech-1
+        DSP_realisations(iech+1, 1:1:Nfft) = abs(fftshift(fft(x(1, iech*Nfft+1:1:(iech+1)*Nfft), Nfft))).^2;
     end
     
     df = Fe/Nfft;
     
     X = mean(DSP_realisations) ./Nfft ./Fe;
     f = -Fe/2+df:df:Fe/2;
+    
 end
