@@ -3,7 +3,7 @@ clc;
 clear all;
 close all;
 
-addpath("../src/PHY");
+addpath("../PHY/");
 
 %{
 %% Test with White Noise

@@ -3,7 +3,7 @@ clc;
 clear all;
 close all;
 
-addpath("../src/PHY");
+addpath("../PHY/");
 
 %% Params
 Fse = 20;
@@ -27,7 +27,7 @@ packet_estim = demodulatePPM(yl, Fse);
 [DecPacket, errors] = detect(CRCDet,packet_estim');
 
 if errors
-    fprintf("Le message est intègre\n");
-else
     fprintf("Le message n'est pas intègre\n");
+else
+    fprintf("Le message est intègre\n");
 end
