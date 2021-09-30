@@ -10,7 +10,6 @@ addpath("../PHY/");
 Fe = 20 * 10e6; %Hz
 Fse = 20;
 Fs = Fe/Fse;
-%Eb = 1/(8*Fs);
 Eb = 1/8 * Fse;
 
 nbr_err_threshold = 100;
