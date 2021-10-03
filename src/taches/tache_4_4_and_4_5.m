@@ -57,8 +57,8 @@ end
 rl = abs(yl).^2;
 
 %% Sync
-yl_sync = synchronisation(rl, temp_delay, sp_len, packet_size*Fse);
-
+temp_delay_estim = temp_delay_estimation(rl, sp, temp_delay_max);
+yl_sync = synchronisation(rl, temp_delay_estim, sp_len, packet_size*Fse);
 
 %% Demodulation
 packet_estim = demodulatePPM(yl_sync, Fse);
