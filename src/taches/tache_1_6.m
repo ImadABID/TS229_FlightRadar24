@@ -37,7 +37,7 @@ for i=1:1:SNR_len
         nbr_err = nbr_err + sum(packet ~= packet_estim);
         nbr_bits = nbr_bits + packet_size;
         j = j+1;
-        fprintf("%d:%d sigma = %f, SNR = %f,  nbr_err = %d\n", i, j, sigma, SNR(i), nbr_err);
+        fprintf("progress(percent)=%f, iteration(%d:%d), sigma = %f, SNR = %f,  nbr_err = %d\n", i/SNR_len*100, i, j, sigma, SNR(i), nbr_err);
     end
 
     TEB(i) = nbr_err/nbr_bits;
