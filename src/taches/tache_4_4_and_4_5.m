@@ -42,7 +42,7 @@ freq_delay = randi([-freq_delay_max freq_delay_max], 1, 1);
 
 
 % Noisy sending window
-sending_window_len = packet_size*Fse+temp_delay_max+sp_len+100; % Te
+sending_window_len = packet_size*Fse+temp_delay_max+sp_len; % Te
 nl = normrnd(0,sigma, [1, sending_window_len]);
 yl = nl;
 
