@@ -14,8 +14,8 @@ Fs = Fe/Fse;
 Eb = 1/8 * Fse;
 
 % nbr_err
-nbr_err_threshold = 100;
-nbr_err_max_iteration = 10000;
+nbr_err_threshold = 1000;
+nbr_err_max_iteration = 10000000;
 packet_size = 112;
 
 % SNR
