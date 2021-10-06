@@ -57,7 +57,7 @@ for i=1:1:SNR_len
         sl = [sp, sl];
         
         % Choosing delays
-        temp_delay = randi([0 temp_delay_max], 1, 1);
+       temp_delay = randi([0 temp_delay_max], 1, 1);
         freq_delay = randi([-freq_delay_max freq_delay_max], 1, 1);
         
         % Noisy sending window
@@ -66,31 +66,38 @@ for i=1:1:SNR_len
         
         k = 1;
         for ii=1+temp_delay:1:temp_delay+packet_size*Fse+sp_len
-            yl(ii) = nl(ii)+ sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te);
+            %yl(ii) = nl(ii)+ sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te);
+            yl(ii) = nl(ii)+ sl(ii-temp_delay) .* exp(-1j*2*pi*freq_delay*ii);
             k = k+1;
         end
 
         % |yl|.^2
 
-        rl = abs(yl).^2;
-
+         rl = abs(yl).^2;
+%         
+%         rl_Tp = rl(1:sp_len);
+%         [Normalized_Corr, delta_t] = xcorr(rl_Tp, sp, temp_delay_max,'normalized');
+%         [Max_Corr, index] = max(abs(Normalized_Corr(101:end)));
+%         temp_delay_estim = abs(delta_t(100 + index));
         % Sync
-        temp_delay_estim = temp_delay_estimation(rl, sp, temp_delay_max);
-        
+        temp_delay_estim = Estimation_time_delay(rl, sp, temp_delay_max);
+
         %{
         if(temp_delay_estim ~= temp_delay)
             continue;
         end
         %}
         
+        
         yl_sync = synchronisation(rl, temp_delay_estim, sp_len, packet_size*Fse);
 
+        %packet_estim = demodulatePPM(yl_sync, Fse);
         packet_estim = demodulatePPM(yl_sync, Fse);
         nbr_err = nbr_err + sum(packet ~= packet_estim);
         nbr_bits = nbr_bits + packet_size;
         j = j+1;
         
-        fprintf("progress(percent)=%f, iteration(%d:%d), sigma = %f, SNR = %f,  nbr_err = %d, temp_delay_estim_err=%d\n", i/SNR_len*100, i, j, sigma, SNR(i), nbr_err, temp_delay_estim - temp_delay);
+        fprintf("progress(percent)=%f, iteration(%d:%d), sigma = %f, SNR = %f,  nbr_err = %d, temp_delay_estim_err=%d\n", i/SNR_len*100, i, j, sigma, SNR(i), nbr_err, temp_delay - temp_delay_estim);
         
     end
 

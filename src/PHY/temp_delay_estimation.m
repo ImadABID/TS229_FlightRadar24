@@ -22,7 +22,7 @@ function temp_delay = temp_delay_estimation(rl, sp, temp_delay_max)
         
     end
     
-    [~, temp_delay] = max(corr_table);
+    [~, temp_delay] = max(abs(corr_table));
     
     temp_delay = temp_delay - 1;
 end
