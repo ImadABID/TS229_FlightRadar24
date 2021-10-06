@@ -1,0 +1,16 @@
+function [temp_delay, freq_delay, cor] = Estimation_time_freq_delay(yl, sp, temp_delay_max, freq_delay_max)
+    sp_len = length(sp); 
+    sp_square_integral = sum(abs(sp).^2);
+    
+    cor = zeros(temp_delay_max, freq_delay_max);
+    
+    for t=1:temp_delay_max
+        for f=1:freq_delay_max     
+            rl_square_integral(k) = sum(abs(rl(1+k:sp_len+k)).^2);
+            rl_sp_integral(k) = sum(rl(1+k:sp_len+k).*sp);  
+            cor(t, f) = sum(yl(1+t:sp_len+t).*sp.*exp(1j*2*pi*f*t))./(sqrt(sp_square_integral)*sqrt(sum(abs(yl(1+t:sp_len+t)).^2)));
+        end
+    end
+    maxcorr = max(abs(cor(:)));
+    [temp_delay, freq_delay] = find(abs(cor) == maxcorr);
+end
