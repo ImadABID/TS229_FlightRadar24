@@ -80,7 +80,7 @@ for i=1:1:SNR_len
 %         [Max_Corr, index] = max(abs(Normalized_Corr(101:end)));
 %         temp_delay_estim = abs(delta_t(100 + index));
         % Sync
-        temp_delay_estim = Estimation_time_delay(rl, sp, temp_delay_max);
+        temp_delay_estim = temp_delay_estimation(rl, sp, temp_delay_max);
 
         %{
         if(temp_delay_estim ~= temp_delay)

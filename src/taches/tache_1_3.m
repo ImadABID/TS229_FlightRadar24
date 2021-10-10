@@ -21,7 +21,7 @@ nbr_fig = 6;
 
 %% input
 bk = [1, 0, 0, 1, 0];
-bk = repmat(bk, 1, 100);
+%bk = repmat(bk, 1, 100);
 len_bk = size(bk); len_bk = len_bk(1,2);
 
 subplot(nbr_fig, 1, 1)
@@ -47,7 +47,7 @@ plot((0:1:len_bk*Fse-1),yl)
 xlim([-Fse, Fse*len_bk])
 ylabel("y_l")
 
-delta_f = 1000; %Hz
+delta_f = -1000; %Hz
 yl_decf = yl .* exp(-1j*2*pi*delta_f*1/Fe*(0:1:len_bk*Fse-1));
 
 %% Filtre adapte

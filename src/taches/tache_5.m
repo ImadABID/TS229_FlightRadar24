@@ -20,7 +20,7 @@ packet_size = 112;
 
 % SNR
 SNR_len = 50;
-SNR_max = 10;
+SNR_max = 2;
 SNR = (0:SNR_max/(SNR_len-1):SNR_max);
 
 % Preambule
@@ -60,9 +60,11 @@ for i=1:1:SNR_len
        
         temp_delay = randi([0 temp_delay_max], 1, 1);
         freq_delay = randi([-freq_delay_max freq_delay_max], 1, 1);
+        %freq_delay = 0;
         
         % Noisy sending window
         nl = normrnd(0,sigma, [1, sending_window_len]);
+        %nl = zeros(1, sending_window_len);
         yl = nl;
         
         k = 1;
@@ -79,7 +81,7 @@ for i=1:1:SNR_len
         % Sync
         [temp_delay_estim, freq_delay_estim] = Estimation_time_freq_delay(yl, sp, temp_delay_max, freq_delay_max);
 
-        yl_sync = synchronisation(yl, temp_delay_estim, freq_delay_estim, sp_len, packet_size*Fse);
+        yl_sync = synchronisation(yl, temp_delay_estim, freq_delay_estim, sp_len, packet_size*Fse, Te);
 
         packet_estim = demodulatePPM(yl_sync, Fse);
         nbr_err = nbr_err + sum(packet ~= packet_estim);
