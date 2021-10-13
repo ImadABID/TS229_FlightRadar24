@@ -11,4 +11,4 @@
 
 function registre = bit2registre(bitPacketCRC,refLon,refLat)
 
-registre = bit2registre_(bitPacketCRC,refLon,refLat);
+registre = bit2registre_perso(bitPacketCRC,refLon,refLat);
