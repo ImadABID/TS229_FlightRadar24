@@ -15,11 +15,11 @@ Eb = 1/8 * Fse;
 
 % nbr_err
 nbr_err_threshold = 100;
-nbr_err_max_iteration = 10000;
+nbr_err_max_iteration = 100;
 packet_size = 112;
 
 % SNR
-SNR_len = 50;
+SNR_len = 40;
 SNR_max = 10;
 SNR = (0:SNR_max/(SNR_len-1):SNR_max);
 
