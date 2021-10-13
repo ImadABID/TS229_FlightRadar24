@@ -5,6 +5,7 @@ close all;
 
 addpath("../../data/");
 addpath("../MAC/");
+addpath("../General/");
 
 adsb_msgs = load("adsb_msgs.mat");
 
@@ -16,8 +17,8 @@ LAT = zeros(1, nbr_msg);
 
 j = 1;
 for i=1:1:nbr_msg
-    info_registre = bit2registre_perso(adsb_msgs(i,:), -0.7, 44.84);
-    if(isfield(info_registre, "longitude"))
+    info_registre = bit2registre(adsb_msgs(i,:), -0.6055, 44.8066);
+    if isfield(info_registre, "longitude")
         LON(j) = info_registre.longitude;
         LAT(j) = info_registre.latitude;
         j = j+1;
@@ -27,5 +28,7 @@ end
 LON = LON(1:j-1);
 LAT = LAT(1:j-1);
 
-figure, plot(LON, LAT);
+affiche_carte(LON, LAT);
+
+figure, plot(LON, LAT, '*');
 

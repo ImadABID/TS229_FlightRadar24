@@ -19,7 +19,6 @@ function registre = bit2registre_perso(bitPacketCRC,refLon,refLat)
     if errors
         registre = 0;
     else
-        %register = struct('adresse', [], 'format', [], 'type', [], 'nom', [], 'atitude', [], 'timeFlag', [], 'cprFlag', [], 'latitude', [], 'longitude', []);
         
         registre.type = sum(DecPacket(9:1:13) .* (2.^(0:1:4)));
         registre.adresse = DecPacket(17:1:40);
@@ -73,6 +72,4 @@ function registre = bit2registre_perso(bitPacketCRC,refLon,refLat)
         end
         
     end
-    
-    
 end
