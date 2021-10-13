@@ -10,5 +10,5 @@
 % la sortie est un registre contenant ...
 
 function registre = bit2registre(bitPacketCRC,refLon,refLat)
-
-registre = bit2registre_perso(bitPacketCRC,refLon,refLat);
+    registre = bit2registre_perso(bitPacketCRC,refLon,refLat);
+end

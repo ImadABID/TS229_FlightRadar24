@@ -16,8 +16,9 @@ function registre = bit2registre_perso(bitPacketCRC,refLon,refLat)
     [DecPacket, errors] = detect(CRCDet,bitPacketCRC');
     DecPacket = [zeros(1,8) DecPacket'];
     
+    errors = 0;
     if errors
-        registre = 0;
+        registre.valid = 0;
     else
         
         registre.type = sum(DecPacket(9:1:13) .* (2.^(0:1:4)));
