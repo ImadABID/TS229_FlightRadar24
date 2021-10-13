@@ -14,8 +14,8 @@ Fs = Fe/Fse;
 Eb = 1/8 * Fse;
 
 % nbr_err
-nbr_err_threshold = 100;
-nbr_err_max_iteration = 10000;
+nbr_err_threshold = 1000;
+nbr_err_max_iteration = 10000000;
 packet_size = 112;
 
 % SNR
@@ -80,7 +80,7 @@ for i=1:1:SNR_len
 %         [Max_Corr, index] = max(abs(Normalized_Corr(101:end)));
 %         temp_delay_estim = abs(delta_t(100 + index));
         % Sync
-        temp_delay_estim = Estimation_time_delay(rl, sp, temp_delay_max);
+        temp_delay_estim = temp_delay_estimation(rl, sp, temp_delay_max);
 
         %{
         if(temp_delay_estim ~= temp_delay)
