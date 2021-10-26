@@ -89,7 +89,7 @@ for i=1:1:SNR_len
         %}
         
         
-        yl_sync = synchronisation(rl, temp_delay_estim, sp_len, packet_size*Fse);
+        yl_sync = synchronisation_temp(rl, temp_delay_estim, sp_len, packet_size*Fse);
 
         %packet_estim = demodulatePPM(yl_sync, Fse);
         packet_estim = demodulatePPM(yl_sync, Fse);

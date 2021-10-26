@@ -41,7 +41,7 @@ function [] = affiche_carte(REF_LON, REF_LAT)
     im = imread('fond.png');
     image(x,y(end:-1:1),im);
     plot(REF_LON,REF_LAT,'.r','MarkerSize',20);
-    text(REF_LON+0.05,REF_LAT,0,'Actual pos','color','b')
+    %text(REF_LON+0.05,REF_LAT,0,'Actual pos','color','b')
     set(gca,'YDir','normal')
     xlabel('Longitude en degres');
     ylabel('Lattitude en degres');

@@ -7,7 +7,7 @@ function thresholded = correlation(rl, sp, delta_t, seuil)
         
         cor = rl_sp_integral/(sqrt(sp_square_integral)*sqrt(rl_square_integral));
         
-        if cor <= seuil
+        if cor > seuil
             thresholded = 1;
         else
             thresholded = 0;

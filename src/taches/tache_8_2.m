@@ -4,13 +4,16 @@ clear all;
 close all;
 warning('off','all') % disable warnings (crc decoder)
 
+addpath("../MAC/");
 addpath("../PHY/");
+addpath("../General/");
+addpath("../../data/");
 
 %% Params
 
 Fe = 20 * 10e6; %Hz
 Te = 1/Fe;
-Fse = 20; middle = floor(Fse/2);
+Fse = 4; middle = floor(Fse/2);
 Fs = Fe/Fse;
 
 %position d'antenne
@@ -18,10 +21,6 @@ refLon = -0.6055;
 refLat = 44.8066;
 
 packet_size = 112; % without preambule
-
-SNR = 6;
-%sigma = sqrt(Eb/(2*SNR));
-sigma = 0;
 
 % Preambule
 sp_len = 8*Fse; %Te
@@ -37,46 +36,54 @@ buffer = abs(buffer.buffers).^2;
 
 
 [nbr_lig, nbr_col] = size(buffer);
-nbr_lig = 10000;
 
-Register_tab = [];
+%Bdx
+xmax = 0.7128;
+xmin = -1.3581;
+ymax = 45.1683;
+ymin = 44.4542;
 
-nbr_packets = 0;
-valid_corr_packets = 0;
+
+nbr_pts = 20;
+Cor = zeros(1, nbr_pts);
+LAT = zeros(1, nbr_pts);
+LON = zeros(1, nbr_pts);
+
+fprintf("Working . . .\n");
+
 for ic=1:1:nbr_col
     il = 1;
-    while il < nbr_lig - 8*20
-        if correlation(buffer(:, ic)', sp, il, 0.9)
-            valid_corr_packets = valid_corr_packets + 1;
-            packet_decoded = demodulatePPM(buffer(il+8*20:1:il+120*20-1, ic)', Fse);
+    while il < nbr_lig - 120*Fse
+        [is_it, cor] = is_it_a_packet(buffer(il:1:il+8*Fse-1, ic)', sp, 0.56);
+        [recorded_cor_min, recorded_cor_min_index] = min(Cor);
+        
+        if cor > recorded_cor_min
+            
+            packet_decoded = demodulatePPM(buffer(il+8*Fse:1:il+120*Fse-1, ic)', Fse);
             registre = bit2registre(packet_decoded, refLon, refLat);
+            
             if isfield(registre, "longitude")
-                Register_tab = [Register_tab, registre];
-                il = il + 120*8;
-                fprintf("A packet was found at (%d,%d)\n", il, ic);
-                nbr_packets = nbr_packets + 1;
-            else
-                fprintf("(%d,%d) valid_corr_packets = %d, nbr_packets = %d\n", il, ic, valid_corr_packets, nbr_packets);
-                il = il+1;
+                
+                if xmin < registre.longitude && registre.longitude < xmax && ymin < registre.latitude && registre.latitude < ymax 
+                    %fprintf("A packet was found at (%d,%d), (lon, lat)=(%f, %f)\n", il, ic, registre.longitude, registre.latitude);
+
+                    LAT(recorded_cor_min_index) = registre.latitude;
+                    LON(recorded_cor_min_index) = registre.longitude;
+                    Cor(recorded_cor_min_index) = cor;
+                    
+                end
+                
             end
             
+            %il = il + 120*Fse;
+            il = il + 1;
+           
         else
-            fprintf("(%d,%d) valid_corr_packets = %d, nbr_packets = %d\n", il, ic, valid_corr_packets, nbr_packets);
+            %fprintf("(%d,%d) valid_corr_packets = %d, nbr_packets = %d\n", il, ic, valid_corr_packets, nbr_packets);
             il = il+1;
         end
     end
 end
 
-airplane_Address = [];
-LON = [];
-LAT = [];
-
-%{
-for i=1:1:nbr_packets
-    reg_i = find(Register_tab.address == Register_tab(1).address);
-    
-end
-%}
-
-%reg_i = find(Register_tab.address == Register_tab(1).address);
-
+affiche_carte(LON, LAT);
+figure, plot(Cor);
