@@ -30,5 +30,3 @@ LAT = LAT(1:j-1);
 
 affiche_carte(LON, LAT);
 
-figure, plot(LON, LAT, '*');
-

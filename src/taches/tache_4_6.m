@@ -78,7 +78,10 @@ for i=1:1:SNR_len
         % Estimation du décalage temporel
         temp_delay_estim = Estimation_time_delay(rl, sp, temp_delay_max);
         
+<<<<<<< HEAD
         %synchronisation
+=======
+>>>>>>> 8cabbacc2181940b1aaca34edec159c982357f31
         yl_sync = synchronisation_temp(rl, temp_delay_estim, sp_len, packet_size*Fse);
 
         packet_estim = demodulatePPM(yl_sync, Fse);
