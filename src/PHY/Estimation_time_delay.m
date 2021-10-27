@@ -1,4 +1,4 @@
-function temp_delay = estimation_time_delay(rl, sp, temp_delay_max)
+function temp_delay = Estimation_time_delay(rl, sp, temp_delay_max)
     
     sp_len = length(sp);  
     sp_square_sum = sqrt(sum(abs(sp).^2));

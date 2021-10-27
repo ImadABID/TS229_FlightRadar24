@@ -6,12 +6,8 @@ warning('off','all') % disable warnings (crc decoder)
 
 addpath("../MAC/");
 addpath("../PHY/");
-<<<<<<< HEAD
-addpath("../MAC/");
-=======
 addpath("../General/");
 addpath("../../data/");
->>>>>>> 8cabbacc2181940b1aaca34edec159c982357f31
 
 %% Params
 
@@ -58,7 +54,7 @@ fprintf("Working . . .\n");
 for ic=1:1:nbr_col
     il = 1;
     while il < nbr_lig - 120*Fse
-        [is_it, cor] = is_it_a_packet(buffer(il:1:il+8*Fse-1, ic)', sp, 0.56);
+        cor = is_it_a_packet(buffer(il:1:il+8*Fse-1, ic)', sp);
         [recorded_cor_min, recorded_cor_min_index] = min(Cor);
         
         if cor > recorded_cor_min
@@ -89,22 +85,5 @@ for ic=1:1:nbr_col
     end
 end
 
-<<<<<<< HEAD
-airplane_Address = [];
-LON = [];
-LAT = [];
-
-
-%{
-for i=1:1:nbr_packets
-    reg_i = find(Register_tab.address == Register_tab(1).address);
-    
-end
-%}
-
-%reg_i = find(Register_tab.address == Register_tab(1).address);
-
-=======
 affiche_carte(LON, LAT);
 figure, plot(Cor);
->>>>>>> 8cabbacc2181940b1aaca34edec159c982357f31
