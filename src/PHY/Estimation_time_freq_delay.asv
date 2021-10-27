@@ -11,12 +11,14 @@ function [temp_delay, freq_delay] = Estimation_time_freq_delay(yl, sp, temp_dela
     end
      
     cor = cor/sp_square_sum;
+    max = max(max(A));
+    [freq_delay, temp_delay]=find(A==maximum)
     
-    [~, li] = max(abs(cor(:)));
-    
+%     [~, li] = max(abs(cor(:)));
+%     
 %     li = li-1;
-    
-    freq_delay = floor(li/temp_delay_max);
-    temp_delay = mod(li, freq_delay);
+%     
+%     freq_delay = floor(li/temp_delay_max);
+%     temp_delay = mod(li, freq_delay);
 
 end

@@ -14,13 +14,14 @@ Fs = Fe/Fse;
 Eb = 1/8 * Fse;
 
 % nbr_err
-nbr_err_threshold = 100;
+nbr_err_threshold = 10;
 nbr_err_max_iteration = 1e8;
 packet_size = 112;
 
 % SNR
-SNR_len = 10;
-SNR_max = 10;
+
+SNR_len = 5;
+SNR_max = ;
 SNR = (0:SNR_max/(SNR_len-1):SNR_max);
 
 % Preambule
@@ -57,11 +58,14 @@ for i=1:1:SNR_len
         sl = [sp, sl];
         
         % Choosing delays
-       temp_delay = randi([0 temp_delay_max], 1, 1);
+       
+        temp_delay = randi([0 temp_delay_max], 1, 1);
         freq_delay = randi([-freq_delay_max freq_delay_max], 1, 1);
+        %freq_delay = 0;
         
         % Noisy sending window
         nl = normrnd(0,sigma, [1, sending_window_len]);
+        %nl = zeros(1, sending_window_len);
         yl = nl;
         
         k = 1;
@@ -73,13 +77,12 @@ for i=1:1:SNR_len
 
         % |yl|.^2
 
-         rl = abs(yl).^2;
+        %rl = abs(yl).^2;
 
-        % Estimation du décalage temporel
-        temp_delay_estim = Estimation_time_delay(rl, sp, temp_delay_max);
-        
-        %synchronisation
-        yl_sync = synchronisation_temp(rl, temp_delay_estim, sp_len, packet_size*Fse);
+        % Sync
+        [temp_delay_estim, freq_delay_estim] = Estimation_time_freq_delay(yl, sp, temp_delay_max, freq_delay_max);
+
+        yl_sync = synchronisation_temp_freq(yl, temp_delay_estim, freq_delay_estim, sp_len, packet_size*Fse, Te);
 
         packet_estim = demodulatePPM(yl_sync, Fse);
         nbr_err = nbr_err + sum(packet ~= packet_estim);

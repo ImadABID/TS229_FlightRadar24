@@ -5,6 +5,7 @@ close all;
 warning('off','all') % disable warnings (crc decoder)
 
 addpath("../PHY/");
+addpath("../MAC/");
 
 %% Params
 
@@ -70,6 +71,7 @@ end
 airplane_Address = [];
 LON = [];
 LAT = [];
+
 
 %{
 for i=1:1:nbr_packets

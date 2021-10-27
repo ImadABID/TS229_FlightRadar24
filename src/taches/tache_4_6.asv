@@ -19,7 +19,7 @@ nbr_err_max_iteration = 1e8;
 packet_size = 112;
 
 % SNR
-SNR_len = 10;
+SNR_len = 20;
 SNR_max = 10;
 SNR = (0:SNR_max/(SNR_len-1):SNR_max);
 
@@ -74,13 +74,24 @@ for i=1:1:SNR_len
         % |yl|.^2
 
          rl = abs(yl).^2;
-
-        % Estimation du décalage temporel
+%         
+%         rl_Tp = rl(1:sp_len);
+%         [Normalized_Corr, delta_t] = xcorr(rl_Tp, sp, temp_delay_max,'normalized');
+%         [Max_Corr, index] = max(abs(Normalized_Corr(101:end)));
+%         temp_delay_estim = abs(delta_t(100 + index));
+        % Sync
         temp_delay_estim = Estimation_time_delay(rl, sp, temp_delay_max);
+
+        %{
+        if(temp_delay_estim ~= temp_delay)
+            continue;
+        end
+        %}
         
-        %synchronisation
+        
         yl_sync = synchronisation_temp(rl, temp_delay_estim, sp_len, packet_size*Fse);
 
+        %packet_estim = demodulatePPM(yl_sync, Fse);
         packet_estim = demodulatePPM(yl_sync, Fse);
         nbr_err = nbr_err + sum(packet ~= packet_estim);
         nbr_bits = nbr_bits + packet_size;
@@ -97,7 +108,7 @@ end
 figure()
 TEB_cst = ones(1, length(SNR)) * 10^-3;
 
-loglog(SNR, Pb, SNR, TEB, SNR, TEB_cst, '--')
+loglog(SNR, TEB, SNR, Pb, SNR, TEB_cst, '--')
 
 xlabel('Eb/N0');
 ylabel('TEB,Pb');
