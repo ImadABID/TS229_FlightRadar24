@@ -66,7 +66,6 @@ for i=1:1:SNR_len
         
         k = 1;
         for ii=1+temp_delay:1:temp_delay+packet_size*Fse+sp_len
-            %yl(ii) = nl(ii)+ sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te);
             yl(ii) = nl(ii)+ sl(ii-temp_delay) .* exp(-1j*2*pi*freq_delay*ii);
             k = k+1;
         end

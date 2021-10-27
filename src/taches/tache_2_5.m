@@ -5,35 +5,6 @@ close all;
 
 addpath("../PHY/");
 
-%{
-%% Test with White Noise
-
-%% par
-sig_len = 256*1000;
-sigma = 1;
-sig = normrnd(0,sigma, [1, sig_len]);
-
-Nfft = 256;
-Fe = 2e6;
-
-%% traitement
-dsp_sig_m = pwelch(sig);
-
-figure
-plot(dsp_sig_m)
-
-[dsp_sig_pro, f] = Mon_Welch(sig, Nfft, Fe);
-
-figure
-plot(f, dsp_sig_pro.*Fe)
-
-[dsp_sig_per, f] = Mon_Welch_perso(sig, Nfft, Fe);
-
-figure
-plot(f, dsp_sig_per .* Fe)
-%}
-
-
 %% Params
 
 Fe = 20 * 1e6; %Hz

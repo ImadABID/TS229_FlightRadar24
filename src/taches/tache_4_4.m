@@ -50,7 +50,6 @@ yl = nl;
 k = 1;
 for i=1+temp_delay:1:temp_delay+packet_size*Fse+sp_len
     yl(i) = nl(i)+ sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te);
-    %yl(i) = sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te); without noise
     k = k+1;
 end
 
@@ -111,7 +110,6 @@ for i=1:1:SNR_len
         yl = sl + nl;
         k = 1;
         for i=1+temp_delay:1:temp_delay+packet_size*Fse+sp_len
-            %yl(i) = nl(i)+ sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te);
              yl(i) = nl(i) + sl(k) .* exp(-1j*2*pi*freq_delay*(k-1)*Te); %without noise
              k = k+1;
         end
@@ -128,12 +126,6 @@ end
 
 figure()
 loglog(SNR, TEB(1:SNR_len))
-% hold on
-% loglog(SNR, Pb)
-% hold off
-% xlabel('Eb/N0');
-% ylabel('TEB,Pb');
-% legend('TEB','Pb théorique','Location','southwest');
 
 
 

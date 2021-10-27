@@ -14,8 +14,6 @@ function [temp_delay, freq_delay] = Estimation_time_freq_delay(yl, sp, temp_dela
     
     [~, li] = max(abs(cor(:)));
     
-%     li = li-1;
-    
     freq_delay = floor(li/temp_delay_max);
     temp_delay = mod(li, freq_delay);
 

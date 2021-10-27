@@ -65,7 +65,7 @@ for ic=1:1:nbr_col
             if isfield(registre, "longitude")
                 
                 if xmin < registre.longitude && registre.longitude < xmax && ymin < registre.latitude && registre.latitude < ymax 
-                    %fprintf("A packet was found at (%d,%d), (lon, lat)=(%f, %f)\n", il, ic, registre.longitude, registre.latitude);
+                    fprintf("A packet was found at (%d,%d), (lon, lat)=(%f, %f)\n", il, ic, registre.longitude, registre.latitude);
 
                     LAT(recorded_cor_min_index) = registre.latitude;
                     LON(recorded_cor_min_index) = registre.longitude;
@@ -75,15 +75,15 @@ for ic=1:1:nbr_col
                 
             end
             
-            %il = il + 120*Fse;
             il = il + 1;
            
         else
-            %fprintf("(%d,%d) valid_corr_packets = %d, nbr_packets = %d\n", il, ic, valid_corr_packets, nbr_packets);
             il = il+1;
         end
     end
 end
 
 affiche_carte(LON, LAT);
-figure, plot(Cor);
+figure,
+plot(Cor);
+title("Les valeurs de corrélation avec le préambule des paquets affichés");
